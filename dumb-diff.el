@@ -44,7 +44,8 @@
     (dumb-diff-write-to-file dd-f2 dumb-diff-f2)
 
     (let* ((cmd (format "diff -u %s %s" dd-f1 dd-f2))
-           (result (shell-command-to-string cmd)))
+           (raw-result (shell-command-to-string cmd))
+           (result (if (> (length raw-result) 0) result "(no difference)")))
       (with-current-buffer dumb-diff-f-result
         (funcall 'diff-mode)
         (erase-buffer)
