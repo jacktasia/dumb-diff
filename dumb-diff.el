@@ -1,22 +1,51 @@
+;; Package -- Summary
+;; Copyright (C) 2017 jack angers
+;; Author: jack angers
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.3"))
+;; Keywords: programming, diff
 
-;; TODO: audit inline TODOS
-;; TODO: add license
-;; TODO: package-ify
+;; Dumb Diff is free software; you can redistribute it and/or modify it
+;; under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+;;
+;; Dumb Diff is distributed in the hope that it will be useful, but WITHOUT
+;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+;; or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+;; License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Dumb Diff.  If not, see http://www.gnu.org/licenses.
+
+;;; Commentary:
+
+;; Dumb Diff is an Emacs "diff to definition" package for fast arbitrary diffs.
+
+
 ;; TODO: submit to MELPA
 ;; TODO: make `defcustom`s
 ;; TODO: add tests
 ;; TODO: add `defcustom` for `dumb-diff-bin-path` (default: "diff") and `dumb-diff-bin-args` (default: "-u")
+;; TODO: audit inline TODOS
 
-(defvar dumb-diff-buf1 nil)
-(defvar dumb-diff-buf2 nil)
-(defvar dumb-diff-buf-result nil)
+;;; Code:
+
+;; TODO: make these `defcustom`s
+
 (defvar dumb-diff-buf1-name "*Dumb Diff 1*")
 (defvar dumb-diff-buf2-name "*Dumb Diff 2*")
 
 (defvar dumb-diff-msg-empty "Press `C-c C-c` to view the diff for the buffers above")
 (defvar dumb-diff-msg-no-difference "(no difference)")
 
-(defun dumb-diff-go ()
+;; hold tmp
+(defvar dumb-diff-buf1 nil)
+(defvar dumb-diff-buf2 nil)
+(defvar dumb-diff-buf-result nil)
+
+(defun dumb-diff ()
+  "Create and focus the Dumb Diff interface: two buffers for comparison on top and one for the diff result on bottom."
   (interactive)
 
   (setq dumb-diff-buf1 (get-buffer-create dumb-diff-buf1-name))
@@ -37,23 +66,26 @@
   (dumb-diff--refresh))
 
 (defun dumb-diff-select-result ()
+  "Switch to the result buffer."
   (interactive)
   (switch-to-buffer dumb-diff-buf-result))
 
 (defun dumb-diff-get-buffer-contents (b)
+  "Return the results of buffer B."
   (with-current-buffer b
     (buffer-string)))
 
 (defun dumb-diff-write-to-file (f c)
+  "Write to file F the contents of C."
   (with-temp-file f
     (insert c)))
 
-
 (defun dumb-diff-string-replace (old new str)
+  "Replace OLD with NEW in STR."
   (replace-regexp-in-string (regexp-quote old) new str nil 'literal))
 
 (defun dumb-diff--refresh ()
-  "Run `diff` command and update result buffer."
+  "Run `diff` command, update result buffer, and select it."
   (let* ((dd-f1 (make-temp-file "dumb-diff-buf1"))
          (dd-f2 (make-temp-file "dumb-diff-buf2"))
          (txt-f1 (dumb-diff-get-buffer-contents dumb-diff-buf1))
@@ -86,19 +118,17 @@
         (insert result)))
     (dumb-diff-select-result)))
 
-
 (defvar dumb-diff-mode-map (make-sparse-keymap)
   "Keymap for `dumb-diff-mode'.")
 
 (defun dumb-diff-mode-keymap ()
   "Define keymap for `dumb-diff-mode'."
-  (define-key dumb-diff-mode-map (kbd "C-c C-c") 'dumb-diff-go))
-
+  (define-key dumb-diff-mode-map (kbd "C-c C-c") 'dumb-diff))
 
 (define-derived-mode dumb-diff-mode
   fundamental-mode
   "Dumb Diff"
   (dumb-diff-mode-keymap))
 
-
-;;END
+(provide 'dumb-diff)
+;;; dumb-diff.el ends here
