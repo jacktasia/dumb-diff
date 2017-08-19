@@ -22,22 +22,57 @@
 
 ;; Dumb Diff is an Emacs "diff to definition" package for fast arbitrary diffs.
 
-
 ;; TODO: submit to MELPA
-;; TODO: make `defcustom`s
 ;; TODO: add tests
-;; TODO: add `defcustom` for `dumb-diff-bin-path` (default: "diff") and `dumb-diff-bin-args` (default: "-u")
-;; TODO: audit inline TODOS
 
 ;;; Code:
 
-;; TODO: make these `defcustom`s
+(defgroup dumb-diff nil
+  "Easy fast arbitrary diffs"
+  :group 'tools
+  :group 'convenience)
 
-(defvar dumb-diff-buf1-name "*Dumb Diff 1*")
-(defvar dumb-diff-buf2-name "*Dumb Diff 2*")
+(defcustom dumb-diff-bin-path
+  "diff"
+  "The path to the binary for your diff program."
+  :group 'dumb-diff
+  :type 'string)
 
-(defvar dumb-diff-msg-empty "Press `C-c C-c` to view the diff for the buffers above")
-(defvar dumb-diff-msg-no-difference "(no difference)")
+(defcustom dumb-diff-bin-args
+  "-u"
+  "The args to use with your diff program."
+  :group 'dumb-diff
+  :type 'string)
+
+(defcustom dumb-diff-buf1-name
+  "*Dumb Diff 1*"
+  "Name for Dumb Diff compare buffer 1."
+  :group 'dumb-diff
+  :type 'string)
+
+(defcustom dumb-diff-buf2-name
+  "*Dumb Diff 2*"
+  "Name for Dumb Diff compare buffer 2."
+  :group 'dumb-diff
+  :type 'string)
+
+(defcustom dumb-diff-buf-result-name
+  "*Dumb Diff Result*"
+  "Name for Dumb Diff result buffer."
+  :group 'dumb-diff
+  :type 'string)
+
+(defcustom dumb-diff-msg-empty
+  "Press `C-c C-c` to view the diff for the buffers above"
+  "Content of result buffer when there is nothing to compare."
+  :group 'dumb-diff
+  :type 'string)
+
+(defcustom dumb-diff-msg-no-difference
+  "(no difference)"
+  "Content of result buffer when there is no difference."
+  :group 'dumb-diff
+  :type 'string)
 
 ;; hold tmp
 (defvar dumb-diff-buf1 nil)
@@ -50,7 +85,7 @@
 
   (setq dumb-diff-buf1 (get-buffer-create dumb-diff-buf1-name))
   (setq dumb-diff-buf2 (get-buffer-create dumb-diff-buf2-name))
-  (setq dumb-diff-buf-result (get-buffer-create "*Dumb Diff Result*"))
+  (setq dumb-diff-buf-result (get-buffer-create dumb-diff-buf-result-name))
 
   (delete-other-windows)
   (split-window-below)
@@ -102,7 +137,7 @@
       (with-current-buffer x
         (funcall 'dumb-diff-mode)))
 
-    (let* ((cmd (format "diff -u %s %s" dd-f1 dd-f2))
+    (let* ((cmd (format "%s %s %s %s" dumb-diff-bin-path dumb-diff-bin-args dd-f1 dd-f2))
            (raw-result1 (shell-command-to-string cmd))
            (raw-result2 (dumb-diff-string-replace dd-f1 dumb-diff-buf1-name raw-result1))
            (raw-result3 (dumb-diff-string-replace dd-f2 dumb-diff-buf2-name raw-result2))
