@@ -1,4 +1,4 @@
-;; Package -- Summary
+;;; dumb-diff.el --- fast arbitrary diffs -*- lexical-binding: t; -*-
 ;; Copyright (C) 2017 jack angers
 ;; Author: jack angers
 ;; Version: 0.1.0
