@@ -75,33 +75,27 @@
   :group 'dumb-diff
   :type 'string)
 
-;; hold tmp
-;; TODO: remove these just always get buffer locally in let
-(defvar dumb-diff-buf1 nil)
-(defvar dumb-diff-buf2 nil)
-(defvar dumb-diff-buf-result nil)
-
 (defun dumb-diff ()
   "Create and focus the Dumb Diff interface: two buffers for comparison on top and one for the diff result on bottom."
   (interactive)
 
   ;; TODO: remove these see above
-  (setq dumb-diff-buf1 (get-buffer-create dumb-diff-buf1-name))
-  (setq dumb-diff-buf2 (get-buffer-create dumb-diff-buf2-name))
-  (setq dumb-diff-buf-result (get-buffer-create dumb-diff-buf-result-name))
+  (let ((buf1 (get-buffer-create dumb-diff-buf1-name))
+        (buf2 (get-buffer-create dumb-diff-buf2-name))
+        (buf-result (get-buffer-create dumb-diff-buf-result-name)))
 
-  (delete-other-windows)
-  (split-window-below)
-  (split-window-right)
+    (delete-other-windows)
+    (split-window-below)
+    (split-window-right)
 
-  (switch-to-buffer dumb-diff-buf1)
-  (other-window 1)
+    (switch-to-buffer buf1)
+    (other-window 1)
 
-  (switch-to-buffer dumb-diff-buf2)
-  (other-window 1)
+    (switch-to-buffer buf2)
+    (other-window 1)
 
-  (switch-to-buffer dumb-diff-buf-result)
-  (dumb-diff--refresh))
+    (switch-to-buffer buf-result)
+    (dumb-diff--refresh)))
 
 (defun dumb-diff-set-region-as-buffer1 (start end)
   "Inject the START and END region into the first 'original' buffer for comparison."
@@ -118,12 +112,13 @@
   (let ((buf (get-buffer-create name))
         (text (buffer-substring-no-properties start end)))
     (with-current-buffer buf
-        (insert text))))
+      (erase-buffer)
+      (insert text))))
 
 (defun dumb-diff-select-result ()
   "Switch to the result buffer."
   (interactive)
-  (switch-to-buffer dumb-diff-buf-result))
+  (switch-to-buffer (get-buffer-create dumb-diff-buf-result-name)))
 
 (defun dumb-diff-get-buffer-contents (b)
   "Return the results of buffer B."
@@ -141,10 +136,13 @@
 
 (defun dumb-diff--refresh ()
   "Run `diff` command, update result buffer, and select it."
-  (let* ((dd-f1 (make-temp-file "dumb-diff-buf1"))
+  (let* ((buf1 (get-buffer-create dumb-diff-buf1-name))
+         (buf2 (get-buffer-create dumb-diff-buf2-name))
+         (buf-result (get-buffer-create dumb-diff-buf-result-name))
+         (dd-f1 (make-temp-file "dumb-diff-buf1"))
          (dd-f2 (make-temp-file "dumb-diff-buf2"))
-         (txt-f1 (dumb-diff-get-buffer-contents dumb-diff-buf1))
-         (txt-f2 (dumb-diff-get-buffer-contents dumb-diff-buf2))
+         (txt-f1 (dumb-diff-get-buffer-contents buf1))
+         (txt-f2 (dumb-diff-get-buffer-contents buf2))
          (is-blank (and (= (length txt-f1) 0)
                         (= (length txt-f2) 0))))
 
@@ -153,7 +151,7 @@
     (dumb-diff-write-to-file dd-f2 txt-f2)
 
     ;; ensure compare buffers have major mode enabled
-    (dolist (x (list dumb-diff-buf2 dumb-diff-buf1))
+    (dolist (x (list buf2 buf1))
       (with-current-buffer x
         (funcall 'dumb-diff-mode)))
 
@@ -167,10 +165,11 @@
                          dumb-diff-msg-empty
                        dumb-diff-msg-no-difference))))
 
-      (with-current-buffer dumb-diff-buf-result
+      (with-current-buffer buf-result
         (funcall 'diff-mode)
         (erase-buffer)
-        (insert result)))
+        (insert result)
+        (beginning-of-buffer)))
     (dumb-diff-select-result)))
 
 (defvar dumb-diff-mode-map (make-sparse-keymap)
