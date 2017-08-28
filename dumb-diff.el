@@ -23,7 +23,8 @@
 ;; Dumb Diff is an Emacs "diff to definition" package for fast arbitrary diffs.
 
 ;; TODO: submit to MELPA
-;; TODO: add tests
+;; TODO: add more tests
+;; TODO: (dumb-diff-clear)
 
 ;;; Code:
 
@@ -45,19 +46,19 @@
   :type 'string)
 
 (defcustom dumb-diff-buf1-name
-  "*Dumb Diff 1*"
+  "*Dumb Diff - 1*"
   "Name for Dumb Diff compare buffer 1."
   :group 'dumb-diff
   :type 'string)
 
 (defcustom dumb-diff-buf2-name
-  "*Dumb Diff 2*"
+  "*Dumb Diff - 2*"
   "Name for Dumb Diff compare buffer 2."
   :group 'dumb-diff
   :type 'string)
 
 (defcustom dumb-diff-buf-result-name
-  "*Dumb Diff Result*"
+  "*Dumb Diff - Result*"
   "Name for Dumb Diff result buffer."
   :group 'dumb-diff
   :type 'string)
@@ -75,6 +76,7 @@
   :type 'string)
 
 ;; hold tmp
+;; TODO: remove these just always get buffer locally in let
 (defvar dumb-diff-buf1 nil)
 (defvar dumb-diff-buf2 nil)
 (defvar dumb-diff-buf-result nil)
@@ -83,6 +85,7 @@
   "Create and focus the Dumb Diff interface: two buffers for comparison on top and one for the diff result on bottom."
   (interactive)
 
+  ;; TODO: remove these see above
   (setq dumb-diff-buf1 (get-buffer-create dumb-diff-buf1-name))
   (setq dumb-diff-buf2 (get-buffer-create dumb-diff-buf2-name))
   (setq dumb-diff-buf-result (get-buffer-create dumb-diff-buf-result-name))
@@ -99,6 +102,23 @@
 
   (switch-to-buffer dumb-diff-buf-result)
   (dumb-diff--refresh))
+
+(defun dumb-diff-set-region-as-buffer1 (start end)
+  "Inject the START and END region into the first 'original' buffer for comparison."
+  (interactive "r")
+  (dumb-diff-set-buffer-by-name dumb-diff-buf1-name start end))
+
+(defun dumb-diff-set-region-as-buffer2 (start end)
+  "Inject the START and END region into the second 'new' buffer for comparison."
+  (interactive "r")
+  (dumb-diff-set-buffer-by-name dumb-diff-buf2-name start end))
+
+(defun dumb-diff-set-buffer-by-name (name start end)
+  "Injected into buffer NAME the string from region START to END."
+  (let ((buf (get-buffer-create name))
+        (text (buffer-substring-no-properties start end)))
+    (with-current-buffer buf
+        (insert text))))
 
 (defun dumb-diff-select-result ()
   "Switch to the result buffer."
