@@ -12,7 +12,7 @@ Sometimes I need to do a diff of arbitrary content that is either not in a file 
 
 ## Installing
 
-The recommended way to install Dumb Diff ~is~ will be via `package.el`. It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package-install dumb-diff
+The recommended way to install Dumb Diff ~is~ will be via `package.el`. It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package-install dumb-diff`
 
 ##### `use-package` example configuration.
 
