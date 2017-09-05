@@ -1,3 +1,5 @@
+WORK IN PROGRESS (not submitted to MELPA yet)
+
 # dumb-diff
 
 ![Dumb Diff Screenshot](media/screenshot.png?raw=true)
