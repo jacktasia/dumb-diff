@@ -6,11 +6,15 @@ WORK IN PROGRESS (not submitted to MELPA yet)
 
 ## About
 
-Dumb Diff is an Emacs package for fast arbitrary diffs.
+Dumb Diff is an Emacs package for fast arbitrary diffs. Calling `dumb-diff` will create two comparison buffers on top and one result buffer on the bottom. Every time you call `dumb-diff` it wili update the result buffer and show the UI. You can use `dumb-diff-set-region-as-buffer1` and `dumb-diff-set-region-as-buffer2` to copy the content of selected regions directly into the buffer without needed to call `dumb-diff` first.
 
 ## Why?
 
-Sometimes I need to do a diff of arbitrary content that is either not in a file or only part of one. For example, I'll have a block of something embedded in a file and then someone will IM me a change for it. Previously it's been faster to just google `online diff` and copy/paste both parts than making new files or buffers. This lead me to create Dumb Diff.
+I have often needed to do a diff of arbitrary content that is either not in a file or only part of one. For example, I'll have a block of something embedded in a file and then someone will IM me a change for it. I often found workflows like this awkward so I made Dumb Diff.
+
+## How it works?
+
+Dumb Diff uses your built-in `diff` program again dynamic temporary files. The `diff` binary and its arguments are customizable via `dumb-diff-bin-path` and `dumb-diff-bin-args`.
 
 ## Installing
 
@@ -21,5 +25,7 @@ The recommended way to install Dumb Diff ~is~ will be via `package.el`. It's ava
 I use `use-package` like so:
 
     (use-package dumb-diff
-      :bind (("C-c d" . dumb-diff))
+      :bind (("C-c d" . dumb-diff)
+             ("C-c 1" . dumb-diff-set-region-as-buffer1)
+             ("C-c 2" . dumb-diff-set-region-as-buffer2))
       :ensure t)
