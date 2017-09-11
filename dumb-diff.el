@@ -79,7 +79,6 @@
   "Create and focus the Dumb Diff interface: two buffers for comparison on top and one for the diff result on bottom."
   (interactive)
 
-  ;; TODO: remove these see above
   (let ((buf1 (get-buffer-create dumb-diff-buf1-name))
         (buf2 (get-buffer-create dumb-diff-buf2-name))
         (buf-result (get-buffer-create dumb-diff-buf-result-name)))
@@ -97,15 +96,19 @@
     (switch-to-buffer buf-result)
     (dumb-diff--refresh)))
 
+;;;###autoload
 (defun dumb-diff-set-region-as-buffer1 (start end)
   "Inject the START and END region into the first 'original' buffer for comparison."
   (interactive "r")
-  (dumb-diff-set-buffer-by-name dumb-diff-buf1-name start end))
+  (dumb-diff-set-buffer-by-name dumb-diff-buf1-name start end)
+  (message "%s" "Selected region copied to Dumb Diff 1"))
 
+;;;###autoload
 (defun dumb-diff-set-region-as-buffer2 (start end)
   "Inject the START and END region into the second 'new' buffer for comparison."
   (interactive "r")
-  (dumb-diff-set-buffer-by-name dumb-diff-buf2-name start end))
+  (dumb-diff-set-buffer-by-name dumb-diff-buf2-name start end)
+  (message "%s" "Selected region copied to Dumb Diff 2"))
 
 (defun dumb-diff-set-buffer-by-name (name start end)
   "Injected into buffer NAME the string from region START to END."
