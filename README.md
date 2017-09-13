@@ -2,6 +2,8 @@ WORK IN PROGRESS (not submitted to MELPA yet)
 
 # dumb-diff
 
+[![Build Status](https://travis-ci.org/jacktasia/dumb-diff.svg?branch=master)](https://travis-ci.org/jacktasia/dumb-diff)
+
 ![Dumb Diff Screenshot](media/screenshot.png?raw=true)
 
 ## About
