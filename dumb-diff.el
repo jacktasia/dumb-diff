@@ -172,7 +172,7 @@
         (funcall 'diff-mode)
         (erase-buffer)
         (insert result)
-        (beginning-of-buffer)))
+        (goto-char (point-min))))
     (dumb-diff-select-result)))
 
 (defvar dumb-diff-mode-map (make-sparse-keymap)
