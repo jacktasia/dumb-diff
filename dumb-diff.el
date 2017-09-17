@@ -75,6 +75,7 @@
   :group 'dumb-diff
   :type 'string)
 
+;;;###autoload
 (defun dumb-diff ()
   "Create and focus the Dumb Diff interface: two buffers for comparison on top and one for the diff result on bottom."
   (interactive)
