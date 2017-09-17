@@ -161,16 +161,19 @@
 
     (let* ((cmd (format "%s %s %s %s" dumb-diff-bin-path dumb-diff-bin-args dd-f1 dd-f2))
            (raw-result1 (shell-command-to-string cmd))
+           (has-diff (> (length raw-result1) 0))
            (raw-result2 (dumb-diff-string-replace dd-f1 dumb-diff-buf1-name raw-result1))
            (raw-result3 (dumb-diff-string-replace dd-f2 dumb-diff-buf2-name raw-result2))
-           (result (if (> (length raw-result3) 0)
+           (result (if has-diff
                        raw-result3
                      (if is-blank
                          dumb-diff-msg-empty
                        dumb-diff-msg-no-difference))))
 
       (with-current-buffer buf-result
-        (funcall 'diff-mode)
+        (if has-diff
+            (funcall 'diff-mode)
+          (funcall 'text-mode))
         (erase-buffer)
         (insert result)
         (goto-char (point-min))))
