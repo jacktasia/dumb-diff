@@ -1,6 +1,6 @@
 # dumb-diff
 
-[![Build Status](https://travis-ci.org/jacktasia/dumb-diff.svg?branch=master)](https://travis-ci.org/jacktasia/dumb-diff)
+[![Build Status](https://travis-ci.org/jacktasia/dumb-diff.svg?branch=master)](https://travis-ci.org/jacktasia/dumb-diff) [![MELPA](http://melpa.org/packages/dumb-diff-badge.svg)](http://melpa.org/#/dumb-diff)
 
 ![Dumb Diff Screenshot](media/screenshot.png?raw=true)
 
