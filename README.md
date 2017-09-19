@@ -32,8 +32,6 @@ It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package
 
 I personally use `use-package` together with [hydra](https://github.com/abo-abo/hydra).
 
-The recommended way to install Dumb Diff ~is~ will be via `package.el`. 
-
 ## Alternatives
 
 Potential alternative packages for emacs:
