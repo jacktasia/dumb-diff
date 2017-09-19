@@ -12,7 +12,7 @@ Calling `dumb-diff` will create two comparison buffers on top and one result buf
 
 ## Why?
 
-I  often need to see the diff of arbitrary content that is either not in a file or is only part of one. For instance, I'll have a string somewhere in a file, and then someone will send me an edit for it. I have often found this situation awkward, so I made this. Similar functionality is somewhere in the `ediff` package and elsewhere. See other ([alternatives](#alternatives)) here.
+I  often need to see the diff of arbitrary content that is either not in a file or is only part of one. For instance, I'll have a string somewhere in a file, and then someone will send me an edit for it. I have often found this situation awkward, so I made this. Similar functionality is somewhere in the `ediff` package and elsewhere. See [alternatives](#alternatives).
 
 ## How it works?
 
@@ -38,4 +38,4 @@ The recommended way to install Dumb Diff ~is~ will be via `package.el`.
 
 Potential alternative packages for emacs:
 
-* [ediff](https://www.emacswiki.org/emacs/EdiffMode)
+* [ediff](https://www.gnu.org/software/emacs/manual/html_node/ediff/)
