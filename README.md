@@ -27,7 +27,8 @@ It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package
     (use-package dumb-diff
       :bind (("C-c d" . dumb-diff)
              ("C-c 1" . dumb-diff-set-region-as-buffer1)
-             ("C-c 2" . dumb-diff-set-region-as-buffer2))
+             ("C-c 2" . dumb-diff-set-region-as-buffer2)
+             ("C-c q" . dumb-diff-quit))
       :ensure t)
 
 I personally use `use-package` together with [hydra](https://github.com/abo-abo/hydra).

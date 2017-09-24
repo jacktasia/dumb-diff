@@ -71,10 +71,28 @@
   :group 'dumb-diff
   :type 'string)
 
+(defcustom dumb-diff-on-set-show-diff-only
+  t
+  "When non-nil will only show the diff result buffer if you used a set-region-as-bufferN."
+  :group 'dumb-diff
+  :type 'boolean)
+
+(defcustom dumb-diff-clear-buffers-on-quit
+  t
+  "When non-nil will clear dumb diff's comparison and result buffers (so they're clean next time)."
+  :group 'dumb-diff
+  :type 'boolean)
+
+(defvar dumb-diff--saved-window-config nil)
+(defvar dumb-diff--show-comparison-buffers t)
+
 ;;;###autoload
 (defun dumb-diff ()
   "Create and focus the Dumb Diff interface: two buffers for comparison on top and one for the diff result on bottom."
   (interactive)
+
+  (when (null dumb-diff--saved-window-config)
+    (setq dumb-diff--saved-window-config (current-window-configuration)))
 
   (let ((buf1 (get-buffer-create dumb-diff-buf1-name))
         (buf2 (get-buffer-create dumb-diff-buf2-name))
@@ -82,14 +100,12 @@
 
     (delete-other-windows)
     (split-window-below)
-    (split-window-right)
-
-    (switch-to-buffer buf1)
-    (other-window 1)
-
-    (switch-to-buffer buf2)
-    (other-window 1)
-
+    (when dumb-diff--show-comparison-buffers
+      (split-window-right)
+      (switch-to-buffer buf1)
+      (other-window 1)
+      (switch-to-buffer buf2)
+      (other-window 1))
     (switch-to-buffer buf-result)
     (dumb-diff--refresh)))
 
@@ -107,8 +123,19 @@
   (dumb-diff-set-buffer-by-name dumb-diff-buf2-name start end)
   (message "%s" "Selected region copied to Dumb Diff 2"))
 
+;;;###autoload
+(defun dumb-diff-quit ()
+  "Quit dumb diff and restore previous window layout."
+  (interactive)
+  (setq dumb-diff--show-comparison-buffers t) ; reset for next time
+  (when dumb-diff-clear-buffers-on-quit
+    (dumb-diff-clear-buffers))
+  (when dumb-diff--saved-window-config
+    (set-window-configuration dumb-diff--saved-window-config)))
+
 (defun dumb-diff-set-buffer-by-name (name start end)
   "Injected into buffer NAME the string from region START to END."
+  (setq dumb-diff--show-comparison-buffers (not dumb-diff-on-set-show-diff-only))
   (let ((buf (get-buffer-create name))
         (text (buffer-substring-no-properties start end)))
     (with-current-buffer buf
@@ -133,6 +160,12 @@
 (defun dumb-diff-string-replace (old new str)
   "Replace OLD with NEW in STR."
   (replace-regexp-in-string (regexp-quote old) new str nil 'literal))
+
+(defun dumb-diff-clear-buffers ()
+  "Clear the contents of all dumb-diff buffers."
+  (dolist (x (list dumb-diff-buf1-name dumb-diff-buf2-name dumb-diff-buf-result-name))
+    (with-current-buffer (get-buffer-create x)
+      (erase-buffer))))
 
 (defun dumb-diff--refresh ()
   "Run `diff` command, update result buffer, and select it."
