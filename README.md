@@ -4,6 +4,7 @@
 
 ![Dumb Diff Screenshot](media/screenshot.png?raw=true)
 
+
 ## About
 
 Dumb Diff is an Emacs package for fast arbitrary diffs.
@@ -24,8 +25,8 @@ It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package
 
 ## `.emacs` options
 
-* `(setq dumb-diff-on-set-show-diff-only t)` When `t` will only show the diff result buffer (and not the comparisonbuffers) if you used a set-region-as-bufferN. (defaults to `t`)
-* `(setq dumb-diff-clear-buffers-on-quit t)` When `t` will clear dumb diff's comparison and result buffers (so they're clean next time). (defaults to `t`)
+* `(setq dumb-diff-on-set-show-diff-only t)` If using a set-region-as-bufferN, when `t` will only show the diff result buffer while `f` will show the comparison buffers and diff result buffer. (defaults to `t`)
+* `(setq dumb-diff-clear-buffers-on-quit t)` When `t`, quitting dumb diff will clear the comparison and result buffers. (defaults to `t`)
 
 ## `use-package` example configuration.
 
