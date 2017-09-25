@@ -25,7 +25,7 @@ It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package
 
 ## `.emacs` options
 
-* `(setq dumb-diff-on-set-show-diff-only t)` If using a set-region-as-bufferN, when `t` will only show the diff result buffer while `f` will show the comparison buffers and diff result buffer. (defaults to `t`)
+* `(setq dumb-diff-on-set-show-diff-only t)` If using a set-region-as-bufferN, when `t` will only show the diff result buffer while `nil` will show the comparison buffers and diff result buffer. (defaults to `t`)
 * `(setq dumb-diff-clear-buffers-on-quit t)` When `t`, quitting dumb diff will clear the comparison and result buffers. (defaults to `t`)
 
 ## `use-package` example configuration.
