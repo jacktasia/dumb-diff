@@ -4,6 +4,7 @@
 
 ![Dumb Diff Screenshot](media/screenshot.png?raw=true)
 
+
 ## About
 
 Dumb Diff is an Emacs package for fast arbitrary diffs.
@@ -22,12 +23,18 @@ Dumb Diff uses your built-in `diff` program against dynamically created temporar
 
 It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package-install dumb-diff`
 
-##### `use-package` example configuration.
+## `.emacs` options
+
+* `(setq dumb-diff-on-set-show-diff-only t)` If using a set-region-as-bufferN, when `t` will only show the diff result buffer while `f` will show the comparison buffers and diff result buffer. (defaults to `t`)
+* `(setq dumb-diff-clear-buffers-on-quit t)` When `t`, quitting dumb diff will clear the comparison and result buffers. (defaults to `t`)
+
+## `use-package` example configuration.
 
     (use-package dumb-diff
       :bind (("C-c d" . dumb-diff)
              ("C-c 1" . dumb-diff-set-region-as-buffer1)
-             ("C-c 2" . dumb-diff-set-region-as-buffer2))
+             ("C-c 2" . dumb-diff-set-region-as-buffer2)
+             ("C-c q" . dumb-diff-quit))
       :ensure t)
 
 I personally use `use-package` together with [hydra](https://github.com/abo-abo/hydra).
