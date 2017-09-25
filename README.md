@@ -22,7 +22,12 @@ Dumb Diff uses your built-in `diff` program against dynamically created temporar
 
 It's available on [MELPA](http://melpa.org/#/dumb-diff): <kbd>M-x</kbd> `package-install dumb-diff`
 
-##### `use-package` example configuration.
+## `.emacs` options
+
+* `(setq dumb-diff-on-set-show-diff-only t)` When `t` will only show the diff result buffer (and not the comparisonbuffers) if you used a set-region-as-bufferN. (defaults to `t`)
+* `(setq dumb-diff-clear-buffers-on-quit t)` When `t` will clear dumb diff's comparison and result buffers (so they're clean next time). (defaults to `t`)
+
+## `use-package` example configuration.
 
     (use-package dumb-diff
       :bind (("C-c d" . dumb-diff)
