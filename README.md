@@ -7,13 +7,13 @@
 
 ## About
 
-Dumb Diff is an Emacs package for fast arbitrary diffs.
+Dumb Diff is an Emacs package for fast arbitrary diffs. It will automatically show "word diffs."
 
 Calling `dumb-diff` will create two comparison buffers on top and one result buffer on the bottom. Every time you call `dumb-diff` it will update the result buffer and show the UI. You can use `dumb-diff-set-region-as-buffer1` and `dumb-diff-set-region-as-buffer2` to copy the content of selected regions directly into the buffer without needed to call `dumb-diff` first.
 
 ## Why?
 
-I  often need to see the diff of arbitrary content that is either not in a file or is only part of one. For instance, I'll have a string somewhere in a file, and then someone will send me an edit for it. I have often found this situation awkward, so I made this. Similar functionality is somewhere in the `ediff` package and elsewhere. See [alternatives](#alternatives).
+I often need to see the diff of arbitrary content that is either not in a file or is only part of one. For instance, I'll have a string somewhere in a file, and then someone will send me an edit for it. I have often found this situation awkward, so I made this. Similar functionality is somewhere in the `ediff` package and elsewhere. See [alternatives](#alternatives).
 
 ## How it works?
 
