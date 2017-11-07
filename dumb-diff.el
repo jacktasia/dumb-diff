@@ -85,6 +85,7 @@
 
 (defvar dumb-diff--saved-window-config nil)
 (defvar dumb-diff--show-comparison-buffers t)
+(defvar dumb-diff-hunk-header-re-unified "^@@ -\\([0-9]+\\)\\(?:,\\([0-9]+\\)\\)? \\+\\([0-9]+\\)\\(?:,\\([0-9]+\\)\\)? @@") ;; from diff-mode
 
 ;;;###autoload
 (defun dumb-diff ()
@@ -145,7 +146,13 @@
 (defun dumb-diff-select-result ()
   "Switch to the result buffer."
   (interactive)
-  (switch-to-buffer (get-buffer-create dumb-diff-buf-result-name)))
+  (let ((buf (get-buffer-create dumb-diff-buf-result-name)))
+    (switch-to-buffer buf)
+    (with-current-buffer buf
+      ; on EVERY hunk do "refine" so we get word diffs!
+      (while (re-search-forward dumb-diff-hunk-header-re-unified nil t)
+        (funcall-interactively 'diff-refine-hunk)))))
+
 
 (defun dumb-diff-get-buffer-contents (b)
   "Return the results of buffer B."
