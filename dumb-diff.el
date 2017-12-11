@@ -134,6 +134,21 @@
   (when dumb-diff--saved-window-config
     (set-window-configuration dumb-diff--saved-window-config)))
 
+;;;###autoload
+(defun dumb-diff-git-file ()
+  "Get file git diff for current file."
+  (interactive)
+  (let* ((cmd-tmpl "git diff %s")
+         (git-diff-cmd (format cmd-tmpl (buffer-file-name)))
+         (file-name (car (last (split-string (buffer-file-name) "/"))))
+         (buffer-title (concat "Dumb Diff via git on " file-name " | " (format-time-string "%D @ %H:%M:%S"))))
+    (shell-command git-diff-cmd buffer-title)
+    (with-current-buffer (get-buffer buffer-title)
+      (diff-mode)
+      (while (re-search-forward dumb-diff-hunk-header-re-unified nil t)
+        (funcall-interactively 'diff-refine-hunk)))
+    (other-buffer buffer-title)))
+
 (defun dumb-diff-set-buffer-by-name (name start end)
   "Injected into buffer NAME the string from region START to END."
   (setq dumb-diff--show-comparison-buffers (not dumb-diff-on-set-show-diff-only))
